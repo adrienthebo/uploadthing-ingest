@@ -1,6 +1,7 @@
 "use client";
 
 import { UploadButton, UploadDropzone } from "@/lib/uploadthing";
+import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
 interface UploadedFile {
@@ -12,6 +13,7 @@ interface UploadedFile {
 
 export default function UploadPage() {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const { toast } = useToast();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
@@ -31,11 +33,18 @@ export default function UploadPage() {
                   type: "image"
                 }));
                 setUploadedFiles(prev => [...prev, ...newFiles]);
-                alert("Upload Completed");
+                toast({
+                  title: "Upload Completed",
+                  description: `Successfully uploaded ${res.length} image${res.length > 1 ? 's' : ''}`,
+                });
               }
             }}
             onUploadError={(error: Error) => {
-              alert(`ERROR! ${error.message}`);
+              toast({
+                variant: "destructive",
+                title: "Upload Failed",
+                description: error.message,
+              });
             }}
           />
         </section>
@@ -53,11 +62,18 @@ export default function UploadPage() {
                   type: "pdf"
                 }));
                 setUploadedFiles(prev => [...prev, ...newFiles]);
-                alert("PDF Upload Completed");
+                toast({
+                  title: "PDF Upload Completed",
+                  description: `Successfully uploaded ${res[0].name}`,
+                });
               }
             }}
             onUploadError={(error: Error) => {
-              alert(`ERROR! ${error.message}`);
+              toast({
+                variant: "destructive",
+                title: "PDF Upload Failed",
+                description: error.message,
+              });
             }}
           />
         </section>
@@ -75,11 +91,18 @@ export default function UploadPage() {
                   type: "video"
                 }));
                 setUploadedFiles(prev => [...prev, ...newFiles]);
-                alert("Video Upload Completed");
+                toast({
+                  title: "Video Upload Completed",
+                  description: `Successfully uploaded ${res[0].name}`,
+                });
               }
             }}
             onUploadError={(error: Error) => {
-              alert(`ERROR! ${error.message}`);
+              toast({
+                variant: "destructive",
+                title: "Video Upload Failed",
+                description: error.message,
+              });
             }}
           />
         </section>
